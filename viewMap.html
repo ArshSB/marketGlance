@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Map</title>
+    <link rel="icon" href="images/house.png">
+
+    <!-- css for loading icon -->
+    <style>
+        .lds-dual-ring {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+        }
+        .lds-dual-ring:after {
+            content: " ";
+            display: block;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border-radius: 50%;
+            border: 6px solid #000000;
+            border-color: #180eab transparent #a70303 transparent;
+            animation: lds-dual-ring 1.2s linear infinite;
+        }
+
+        #load {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes lds-dual-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+    <p id = "map-info" style="text-align: center; font-family: Verdana; font-size: 12px; line-height: 25px; position: absolute; top: 25%; left: 50%; transform: translate(-50%, -50%)">
+        Please allow up to 15 seconds for the map to load <br>
+        <strong>How to use:</strong> <br>
+        - Clusters show the average price of a house in the approximate area <br>
+        - Zoom in to see house sale information <br>
+        - Input an address in the searchbar to see sale data for a particular house, if available
+    </p>
+
+    <div class="lds-dual-ring" id="load"></div>
+
+    <div id="map" style="width: 100%; min-height: 97vh; display: none;"></div>
+    <input id="pac-input" class="controls" type="text" placeholder="Find an address" style="display: none;font-size: 20px;width: 40%;height: 34px;margin-top: 8px;margin-left: 5px;">
+
+    <script src="https://cdn.jsdelivr.net/gh/mholt/PapaParse@master/papaparse.min.js"></script>
+    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+    <script type="module" src="javascript/mapScript.js"></script>
+
+</body>
+</html>
