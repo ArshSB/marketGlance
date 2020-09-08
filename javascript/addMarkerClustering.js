@@ -26,7 +26,7 @@ function addClustering(markers, map) {
         for(let i = 0; i < count; i++) { //%
 
             //holds total price of all houses in the cluster
-            houseTotalPrice += parseInt(clusterMarkers[i].getTitle().replace(/\D/g, ""));
+            houseTotalPrice += parseInt(clusterMarkers[i].getTitle());
 
             /*
             Steps: 1) the marker's title is retrieved which holds the house sale price in form $500,000
