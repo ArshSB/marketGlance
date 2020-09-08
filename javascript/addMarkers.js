@@ -49,7 +49,7 @@ function addMarkers(markers, map, filePath) {
 
         const marker = new google.maps.Marker({
             position: {lat: latd, lng: long},
-            title: salePrice,  //title will be later used to find mean price of all houses in a cluster
+            title: salePrice.replace(/\D/g, ""),  //title will be later used to find mean price of all houses in a cluster
             icon: {
                 url: "images/house.png",
                 labelOrigin: new google.maps.Point(15, 40) //set position of label relative to the icon
