@@ -1,3 +1,4 @@
+const puppeteer = require("puppeteer")
 
 /*
 Duy Anh Nguyen
@@ -9,9 +10,125 @@ Parse the house assessment data from the City of Winnipeg
 Function:
 parseWinnipegPropertyAssessment() - Parse the property
     assessment and save it to a given filepath.
+getProperty() - Get the property of the text using xPath.
 */
 
-export default function parseWinnipegPropertyAssessment(filePath)
-{
+/* parseWinnipegPropertyAssessment()
+Parameter:
+ASSESSMENT_URL - The link to the assessment page for scraping.
+rollNumberArray - Array of roll number of the property to
+    get house assessment data.
 
+Return:
+An array with with parsed information relate to the roll number
+    property.
+It will start with the roll number for identification and follow
+    by the assessment information relate to the property.
+*/
+async function parseWinnipegPropertyAssessment(ASSESSMENT_URL, rollNumberArray)
+{
+    // Local variable dictionary
+    const BROWSER = await puppeteer.launch();     // Head-less browser
+    const BROWSER_PAGE = await BROWSER.newPage(); // Browser page
+    let parsedAssessment = {};
+    let scrapeErrorMessage = "Visit the assessment link."
+
+    // Go through each roll number of parse the property assessment information
+    let count = 1;
+    for (let rollNumber of rollNumberArray)
+    {
+        // Print roll reading information to console
+        console.log(count + ": " + rollNumber);
+        count++;
+
+        // Property assessment information object
+        const propertyAssessment =
+            {
+                assessedValue: "",
+                yearBuilt: "",
+                livingArea: "",
+                landArea: "",
+                buildingType: "",
+                basement: "",
+                basementFinish: ""
+            };
+
+        // Local variable dictionary
+        let property; // The property of the webpage contain the desired information for scrape
+
+        // Go to the webpage
+        await BROWSER_PAGE.goto(ASSESSMENT_URL + rollNumber);
+
+        // Get assessment value
+        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[1]/td/table/tbody/tr[3]/td[3]")
+            .then(
+                propertyAssessment.assessedValue = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
+            );
+
+        // Get year built
+        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[6]/td[1]")
+            .then(
+                propertyAssessment.yearBuilt = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
+            );
+
+        // Get living area
+        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[2]/td[1]")
+            .then(
+                propertyAssessment.livingArea = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
+            );
+
+        // Get land area
+        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[5]/td/table/tbody/tr[3]/td[1]")
+            .then(
+                propertyAssessment.landArea = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
+            );
+
+        // Get building type
+        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[3]/td[1]")
+            .then(
+                propertyAssessment.buildingType = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
+            );
+
+        // Get basement
+        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]")
+            .then(
+                propertyAssessment.basement = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
+            );
+
+        // Get basement finish
+        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]")
+            .then(
+                propertyAssessment.basement = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
+            );
+
+        // Save the information into dictionary
+        parsedAssessment[rollNumber.toString()] = propertyAssessment;
+    }
+
+    // Release resource
+    await BROWSER_PAGE.close();
+    await BROWSER.close();
 }
+
+/* getProperty()
+
+Parameter:
+contentString - Container for the content.
+BROWSER_PAGE - The browser page to scrape information.
+xPath - The xPath to the property.
+*/
+async function getProperty(contentString, ROWSER_PAGE, xPath)
+{
+    // Local variable dictionary
+    let element;  // The element scraping
+    let property; // The element property scraping
+
+    // Get assessment value
+    [element] = await BROWSER_PAGE.$x(xPath);
+    property = (element.getProperty != undefined) ? element.getProperty("textContent") : undefined;
+
+    // Return the property
+    return property;
+}
+
+module.exports = parseWinnipegPropertyAssessment;
