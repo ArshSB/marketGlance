@@ -3,7 +3,7 @@
 
 ![Sample image](images/sample_image.PNG)
 
-More specifically, it plots ~20k houses sold in the 2016-2018 period and their respective sale data on to Google Maps. 
+More specifically, it plots 18749 houses sold in the 2016-2018 period and their respective sale data on to Google Maps. 
 
 ## General information
 
