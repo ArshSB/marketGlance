@@ -1,7 +1,7 @@
 const fs = require("fs");
 const csvToObj = require("csv-to-js-parser").csvToObj;
 
-export default function getHouseDataObject()
+function getHouseDataObject()
 {
     // Local variable dictionary
     const HOUSE_DATA_CSV_FILEPATH = "../data/house_data.csv";
@@ -13,14 +13,16 @@ export default function getHouseDataObject()
     const DESCRIPTION =
         {
             address:       {type: "string", group: 1},
-            roll_number:   {type: "string"},
-            year_of_sale:  {type: "number"},
-            month_of_sale: {type: "number"},
-            sale_price:    {type: "string"},
-            longitude:     {type: "number"},
-            latitude:      {type: "number"}
+            roll_number:   {type: "string", group: 1},
+            year_of_sale:  {type: "number", group: 1},
+            month_of_sale: {type: "number", group: 1},
+            sale_price:    {type: "string", group: 1},
+            longitude:     {type: "number", group: 1},
+            latitude:      {type: "number", group: 1}
         };
 
     // Convert and return csv to array object
     return csvToObj(houseDataCSV, ',', DESCRIPTION);
 }
+
+module.exports = getHouseDataObject;
