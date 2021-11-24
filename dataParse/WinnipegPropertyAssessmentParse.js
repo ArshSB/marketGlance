@@ -30,12 +30,7 @@ async function parseWinnipegPropertyAssessment(ASSESSMENT_URL, rollNumberArray)
     // Local variable dictionary
     const BROWSER = await puppeteer.launch();     // Head-less browser
     const BROWSER_PAGE = await BROWSER.newPage(); // Browser page
-<<<<<<< HEAD
-    let parsedAssessment = {};
-    let scrapeErrorMessage = "Visit the assessment link."
-=======
     let parsedAssessment = [];
->>>>>>> 6c6b6fd (Fixed bus not write to file and tested on small number of roll, ready for the big test. About to make some final adjustment to asyn for improvement.)
 
     // Go through each roll number of parse the property assessment information
     let count = 1;
@@ -65,71 +60,28 @@ async function parseWinnipegPropertyAssessment(ASSESSMENT_URL, rollNumberArray)
         await BROWSER_PAGE.goto(ASSESSMENT_URL + rollNumber);
 
         // Get assessment value
-<<<<<<< HEAD
-        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[1]/td/table/tbody/tr[3]/td[3]")
-            .then(
-                propertyAssessment.assessedValue = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
-            );
+        propertyAssessment.assessedValue = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[1]/td/table/tbody/tr[3]/td[3]")
 
         // Get year built
-        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[6]/td[1]")
-            .then(
-                propertyAssessment.yearBuilt = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
-            );
+        propertyAssessment.yearBuilt = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[6]/td[1]");
 
         // Get living area
-        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[2]/td[1]")
-            .then(
-                propertyAssessment.livingArea = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
-            );
+        propertyAssessment.livingArea = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[2]/td[1]")
 
         // Get land area
-        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[5]/td/table/tbody/tr[3]/td[1]")
-            .then(
-                propertyAssessment.landArea = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
-            );
+        propertyAssessment.landArea = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[5]/td/table/tbody/tr[3]/td[1]")
 
         // Get building type
-        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[3]/td[1]")
-            .then(
-                propertyAssessment.buildingType = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
-            );
+        propertyAssessment.buildingType = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[3]/td[1]")
 
         // Get basement
-        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]")
-            .then(
-                propertyAssessment.basement = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
-            );
+        propertyAssessment.basement = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]")
 
         // Get basement finish
-        property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]")
-            .then(
-                propertyAssessment.basement = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
-            );
-=======
-        propertyAssessment.assessedValue = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[1]/td/table/tbody/tr[3]/td[3]")
-
-        // Get year built
-        propertyAssessment.yearBuilt = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[6]/td[1]");
-
-        // Get living area
-        propertyAssessment.livingArea = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[2]/td[1]")
-
-        // Get land area
-        propertyAssessment.landArea = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[5]/td/table/tbody/tr[3]/td[1]")
-
-        // Get building type
-        propertyAssessment.buildingType = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[3]/td[1]")
-
-        // Get basement
-        propertyAssessment.basement = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]")
-
-        // Get basement finish
-        propertyAssessment.basementFinish = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]")
->>>>>>> 6c6b6fd (Fixed bus not write to file and tested on small number of roll, ready for the big test. About to make some final adjustment to asyn for improvement.)
+        propertyAssessment.basementFinish = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]")
 
         // Save the information
-        await parsedAssessment.push(propertyAssessment);
+        parsedAssessment.push(propertyAssessment);
     }
 
     // Release resource
@@ -154,10 +106,6 @@ async function getProperty(contentString, ROWSER_PAGE, xPath)
     let property; // The element property scraping
 
     // Get assessment value
-<<<<<<< HEAD
-    [element] = await BROWSER_PAGE.$x(xPath);
-    property = (element.getProperty != undefined) ? element.getProperty("textContent") : undefined;
-=======
     try
     {
         [element] = await BROWSER_PAGE.$x(xPath);
@@ -168,7 +116,6 @@ async function getProperty(contentString, ROWSER_PAGE, xPath)
     {
         propertyString = "Visit the assessment link.";
     }
->>>>>>> 6c6b6fd (Fixed bus not write to file and tested on small number of roll, ready for the big test. About to make some final adjustment to asyn for improvement.)
 
     // Return the property
     return property;
