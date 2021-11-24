@@ -12,7 +12,7 @@ async function main()
     let rollNumberArray = []; // Roll number of the houses to scrape data
 
     // Read the house_data.csv
-    let houseData = getHouseDataObject().splice(0, 5);
+    let houseData = getHouseDataObject();
 
     // Extract the house data for roll number
     for (let datum of houseData)

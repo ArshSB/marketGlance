@@ -60,25 +60,25 @@ async function parseWinnipegPropertyAssessment(ASSESSMENT_URL, rollNumberArray)
         await BROWSER_PAGE.goto(ASSESSMENT_URL + rollNumber);
 
         // Get assessment value
-        propertyAssessment.assessedValue = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[1]/td/table/tbody/tr[3]/td[3]")
+        propertyAssessment.assessedValue = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[1]/td/table/tbody/tr[3]/td[3]");
 
         // Get year built
         propertyAssessment.yearBuilt = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[6]/td[1]");
 
         // Get living area
-        propertyAssessment.livingArea = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[2]/td[1]")
+        propertyAssessment.livingArea = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[2]/td[1]");
 
         // Get land area
-        propertyAssessment.landArea = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[5]/td/table/tbody/tr[3]/td[1]")
+        propertyAssessment.landArea = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[5]/td/table/tbody/tr[3]/td[1]");
 
         // Get building type
-        propertyAssessment.buildingType = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[3]/td[1]")
+        propertyAssessment.buildingType = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[3]/td[1]");
 
         // Get basement
-        propertyAssessment.basement = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]")
+        propertyAssessment.basement = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]");
 
         // Get basement finish
-        propertyAssessment.basementFinish = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]")
+        propertyAssessment.basementFinish = await getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]");
 
         // Save the information
         parsedAssessment.push(propertyAssessment);
