@@ -30,8 +30,12 @@ async function parseWinnipegPropertyAssessment(ASSESSMENT_URL, rollNumberArray)
     // Local variable dictionary
     const BROWSER = await puppeteer.launch();     // Head-less browser
     const BROWSER_PAGE = await BROWSER.newPage(); // Browser page
+<<<<<<< HEAD
     let parsedAssessment = {};
     let scrapeErrorMessage = "Visit the assessment link."
+=======
+    let parsedAssessment = [];
+>>>>>>> 6c6b6fd (Fixed bus not write to file and tested on small number of roll, ready for the big test. About to make some final adjustment to asyn for improvement.)
 
     // Go through each roll number of parse the property assessment information
     let count = 1;
@@ -44,6 +48,7 @@ async function parseWinnipegPropertyAssessment(ASSESSMENT_URL, rollNumberArray)
         // Property assessment information object
         const propertyAssessment =
             {
+                rollNumber: rollNumber,
                 assessedValue: "",
                 yearBuilt: "",
                 livingArea: "",
@@ -60,6 +65,7 @@ async function parseWinnipegPropertyAssessment(ASSESSMENT_URL, rollNumberArray)
         await BROWSER_PAGE.goto(ASSESSMENT_URL + rollNumber);
 
         // Get assessment value
+<<<<<<< HEAD
         property = getProperty(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[1]/td/table/tbody/tr[3]/td[3]")
             .then(
                 propertyAssessment.assessedValue = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
@@ -100,14 +106,38 @@ async function parseWinnipegPropertyAssessment(ASSESSMENT_URL, rollNumberArray)
             .then(
                 propertyAssessment.basement = (property != undefined) ? property._remoteObject.value : scrapeErrorMessage;
             );
+=======
+        propertyAssessment.assessedValue = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[1]/td/table/tbody/tr[3]/td[3]")
 
-        // Save the information into dictionary
-        parsedAssessment[rollNumber.toString()] = propertyAssessment;
+        // Get year built
+        propertyAssessment.yearBuilt = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[6]/td[1]");
+
+        // Get living area
+        propertyAssessment.livingArea = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[2]/td[1]")
+
+        // Get land area
+        propertyAssessment.landArea = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[5]/td/table/tbody/tr[3]/td[1]")
+
+        // Get building type
+        propertyAssessment.buildingType = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[3]/td[1]")
+
+        // Get basement
+        propertyAssessment.basement = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]")
+
+        // Get basement finish
+        propertyAssessment.basementFinish = getPropertyString(BROWSER_PAGE, "//*[@id=\"ctl00_ContentPlaceHolder1_pnlSingleParcelInfo\"]/table[2]/tbody/tr[4]/td/table/tbody/tr[4]/td[1]")
+>>>>>>> 6c6b6fd (Fixed bus not write to file and tested on small number of roll, ready for the big test. About to make some final adjustment to asyn for improvement.)
+
+        // Save the information
+        await parsedAssessment.push(propertyAssessment);
     }
 
     // Release resource
     await BROWSER_PAGE.close();
     await BROWSER.close();
+
+    // Return the parsed assessment array
+    return parsedAssessment;
 }
 
 /* getProperty()
@@ -124,8 +154,21 @@ async function getProperty(contentString, ROWSER_PAGE, xPath)
     let property; // The element property scraping
 
     // Get assessment value
+<<<<<<< HEAD
     [element] = await BROWSER_PAGE.$x(xPath);
     property = (element.getProperty != undefined) ? element.getProperty("textContent") : undefined;
+=======
+    try
+    {
+        [element] = await BROWSER_PAGE.$x(xPath);
+        property = await element.getProperty("textContent");
+        propertyString = property._remoteObject.value;
+    }
+    catch (err)
+    {
+        propertyString = "Visit the assessment link.";
+    }
+>>>>>>> 6c6b6fd (Fixed bus not write to file and tested on small number of roll, ready for the big test. About to make some final adjustment to asyn for improvement.)
 
     // Return the property
     return property;
