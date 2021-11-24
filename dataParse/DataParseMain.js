@@ -5,7 +5,6 @@ const fs = require("fs");
 async function main()
 {
     // Local variable dictionary
-    const HOUSE_DATA_FILEPATH = "../data/house_data.csv";
     const PROPERTY_ASSESSMENT_URL = "http://www.winnipegassessment.com/AsmtPub/english/propertydetails/" +
         "details.aspx?pgLang=EN&isRealtySearch=true&RollNumber="; // The link to scrape
     const WINNIPEG_PROPERTY_ASSESSMENT_FILEPATH = "../data/winnipeg_property_assessment.json"; // File to write the property assessment information to
