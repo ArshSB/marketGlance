@@ -1,5 +1,8 @@
-let getHousedataObject = require("../dataParse/getHouseDataObject.js");
-let getHouseAssessmentDictionary = require("../dataParse/getHouseAssessmentDictionary.js");
+//let getHousedataObject = require("../dataParse/getHouseDataObject.js");
+//let getHouseAssessmentDictionary = require("../dataParse/getHouseAssessmentDictionary.js");
+
+import {getHousedataObject} from "./dataParse/getHouseDataObject.js";
+import {getHouseAssessmentDictionary} from "./dataParse/getHouseAssessmentDictionary.js";
 
 function addMarkers(markers, map) {
 
