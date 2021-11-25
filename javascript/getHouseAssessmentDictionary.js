@@ -1,15 +1,19 @@
-const fs = require("fs");
 
-function getHouseAssessmentDictionary()
+function getHouseAssessmentDictionary(HOUSE_ASSESSMENT_FILEPATH)
 {
     // Local variable dictionary
-    const HOUSE_ASSESSMENT_DATA_JSON_FILEPATH = "../data/winnipeg_property_assessment.json";
+    let houseAssessmentJSON; // Content of house assessment in json format
 
-    // Get the json data
-    let houseAssessmentDataJSON = fs.readFileSync(HOUSE_ASSESSMENT_DATA_JSON_FILEPATH).toString();
+    // Get the house data csv file
+    const req = new XMLHttpRequest();
+    req.onload = function () {
+        houseAssessmentJSON = req.response;
+    }
+    req.open("GET", HOUSE_ASSESSMENT_FILEPATH, false);
+    req.send();
 
     // Parse the json string to js object and return
-    return JSON.parse(houseAssessmentDataJSON);
+    return JSON.parse(houseAssessmentJSON);
 }
 
 export {getHouseAssessmentDictionary};

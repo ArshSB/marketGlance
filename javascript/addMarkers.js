@@ -1,10 +1,7 @@
-//let getHousedataObject = require("../dataParse/getHouseDataObject.js");
-//let getHouseAssessmentDictionary = require("../dataParse/getHouseAssessmentDictionary.js");
+import {getHouseDataObject} from "./getHouseDataObject.js";
+import {getHouseAssessmentDictionary} from "./getHouseAssessmentDictionary.js";
 
-import {getHousedataObject} from "./dataParse/getHouseDataObject.js";
-import {getHouseAssessmentDictionary} from "./dataParse/getHouseAssessmentDictionary.js";
-
-function addMarkers(markers, map) {
+function addMarkers(markers, map, HOUSE_DATA_FILEPATH, HOUSE_ASSESSMENT_FILEPATH) {
 
     /*
     then creates markers holding the specific data (through Google Map InfoWindow object)
@@ -12,8 +9,8 @@ function addMarkers(markers, map) {
      */
 
     // Local variable dictionary
-    let houseData = getHousedataObject();
-    let houseAssessmentDictionary = getHouseAssessmentDictionary();
+    let houseData = getHouseDataObject(HOUSE_DATA_FILEPATH);
+    let houseAssessmentDictionary = getHouseAssessmentDictionary(HOUSE_ASSESSMENT_FILEPATH);
 
     //this key-value pair will be later on used to convert an integer 'month of sale' to its respective month in string
     const numToMonth = {
@@ -34,9 +31,6 @@ function addMarkers(markers, map) {
     // Add markers
     for (let houseDatum of houseData)
     {
-        // Convert sale price to integer string for cluster
-        const SALE_PRICE_STRING = houseDatum.sale_price.split('.')[0];
-
         // Convert latitude and longitude coordination for google map
         const LATITUDE_FLOAT = parseFloat(houseDatum.latitude);
         const LONGITUDE_FLOAT = parseFloat(houseDatum.longitude);
@@ -48,13 +42,13 @@ function addMarkers(markers, map) {
         // Google marker
         const marker = new google.maps.Marker({
             position: {lat: LATITUDE_FLOAT, lng: LONGITUDE_FLOAT},
-            title: SALE_PRICE_STRING.replace(/\D/g, ""),  //title will be later used to find mean price of all houses in a cluster
+            title: houseDatum.sale_price.replace(/\D/g, ""),  //title will be later used to find mean price of all houses in a cluster
             icon: {
                 url: "images/house.png",
                 labelOrigin: new google.maps.Point(15, 40) //set position of label relative to the icon
             },
             label: {  //displays house price
-                text: SALE_PRICE_STRING,
+                text: houseDatum.sale_price,
                 color: "yellow",
                 fontWeight: "bolder",
                 fontSize: "12px"
@@ -71,19 +65,19 @@ function addMarkers(markers, map) {
         const html =
             '<p style="color: darkred; padding-bottom: 20px; border-bottom: 2px solid darkred; font-size: 20px; font-style: normal; font-weight: 900; font-family: Lucida Console">' + houseDatum.address + '</p>'
             +
-            '<p style="color: gray; padding-bottom: 8px; font-size: 14px; font-family: Verdana;">' + SALE_PRICE_STRING + ' in ' + numToMonth[houseDatum.month_of_sale] + ' ' + houseDatum.year_of_sale + '</p>'
+            '<b><p style="color: black; padding-bottom: 8px; font-size: 14px; font-family: Verdana;">' + 'Sale price: ' + houseDatum.sale_price + ' in ' + numToMonth[houseDatum.month_of_sale] + ' ' + houseDatum.year_of_sale + '</p></b>'
             +
-            '<p style="color: gray; padding-bottom: 8px; font-size: 14px; font-family: Verdana;">' + 'Assessed value: ' + houseAssessmentDictionary[houseDatum.roll_number].assessedValue + '</p>'
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Assessed value: ' + houseAssessmentDictionary[houseDatum.roll_number].assessedValue + '</p>'
             +
-            '<p style="color: gray; padding-bottom: 8px; font-size: 14px; font-family: Verdana;">' + 'Year built: ' + houseAssessmentDictionary[houseDatum.roll_number].yearBuilt + '</p>'
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Year built: ' + houseAssessmentDictionary[houseDatum.roll_number].yearBuilt + '</p>'
             +
-            '<p style="color: gray; padding-bottom: 8px; font-size: 14px; font-family: Verdana;">' + 'Living area: ' + houseAssessmentDictionary[houseDatum.roll_number].livingArea + '</p>'
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Living area: ' + houseAssessmentDictionary[houseDatum.roll_number].livingArea + '</p>'
             +
-            '<p style="color: gray; padding-bottom: 8px; font-size: 14px; font-family: Verdana;">' + 'Land area: ' + houseAssessmentDictionary[houseDatum.roll_number].landArea + '</p>'
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Land area: ' + houseAssessmentDictionary[houseDatum.roll_number].landArea + '</p>'
             +
-            '<p style="color: gray; padding-bottom: 8px; font-size: 14px; font-family: Verdana;">' + 'Basement: ' + houseAssessmentDictionary[houseDatum.roll_number].basement + '</p>'
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Basement: ' + houseAssessmentDictionary[houseDatum.roll_number].basement + '</p>'
             +
-            '<p style="color: gray; padding-bottom: 8px; font-size: 14px; font-family: Verdana;">' + 'Basement finish: ' + houseAssessmentDictionary[houseDatum.roll_number].basementFinish + '</p>'
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Basement finish: ' + houseAssessmentDictionary[houseDatum.roll_number].basementFinish + '</p>'
             +
             '<p style="font-family: Verdana; font-size: 10px; font-weight: bold"> <a style="text-decoration: none;" href=' + HOUSE_ASSESSMENT_URL + ' target="_blank">(See tax assessment)</a></p>'
             +

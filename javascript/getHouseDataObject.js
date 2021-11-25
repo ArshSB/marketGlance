@@ -1,13 +1,17 @@
-const fs = require("fs");
-const csvToObj = require("csv-to-js-parser").csvToObj;
+import {csvToObj} from "./csv_to_js_parser.js";
 
-function getHouseDataObject()
+function getHouseDataObject(HOUSE_DATA_FILEPATH)
 {
     // Local variable dictionary
-    const HOUSE_DATA_CSV_FILEPATH = "../data/house_data.csv";
+    let houseDataCSV; // Content of house data in csv format
 
-    // Get the CSV data
-    let houseDataCSV = fs.readFileSync(HOUSE_DATA_CSV_FILEPATH).toString();
+    // Get the house data csv file
+    const req = new XMLHttpRequest();
+    req.onload = function () {
+        houseDataCSV = req.response;
+    }
+    req.open("GET", HOUSE_DATA_FILEPATH, false);
+    req.send();
 
     // CSV data description
     const DESCRIPTION =
