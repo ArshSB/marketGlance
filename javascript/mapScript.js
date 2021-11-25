@@ -21,12 +21,13 @@ window.initialize = function() {
 
     addBar(map);
 
-    const filePath = "data/house_data.csv";
+    const HOUSE_DATA_FILEPATH = "data/house_data.csv";
+    const HOUSE_ASSESSMENT_FILEPATH = "data/winnipeg_property_assessment.json";
 
     //store all markers in an array so that clustering can be applied to it
     let markers = [];
 
-    addMarkers(markers, map, filePath);
+    addMarkers(markers, map, HOUSE_DATA_FILEPATH, HOUSE_ASSESSMENT_FILEPATH);
 
     addClustering(markers, map);
 

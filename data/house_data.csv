@@ -1,4 +1,4 @@
-address,roll number,year of sale,month of sale,sale price,longitude,latitude
+address,roll_number,year_of_sale,month_of_sale,sale_price,longitude,latitude
 24 DRAKE BLVD,6025047000,2018,3,"$185,000",-97.0875775,49.872774
 1013 ELIZABETH RD,6021106000,2018,3,"$237,000",-97.074197,49.871225
 26 BLUE SPRUCE CRES,8004819400,2018,3,"$340,000",-97.127162,49.8228798

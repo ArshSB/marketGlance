@@ -1,17 +1,16 @@
-import {getCsv} from "./getDataFiles.js";
+import {getHouseDataObject} from "./getHouseDataObject.js";
+import {getHouseAssessmentDictionary} from "./getHouseAssessmentDictionary.js";
 
-function addMarkers(markers, map, filePath) {
+function addMarkers(markers, map, HOUSE_DATA_FILEPATH, HOUSE_ASSESSMENT_FILEPATH) {
 
     /*
-    Following code reads house data from a CSV file,
     then creates markers holding the specific data (through Google Map InfoWindow object)
     for each house in an array to be clustered later
      */
 
-
-    //since PapaParse returns a JSON file which includes various objects,
-    //["data"] is used to only read the original CSV data
-    const data = Papa.parse(getCsv(filePath))["data"];
+    // Local variable dictionary
+    let houseData = getHouseDataObject(HOUSE_DATA_FILEPATH);
+    let houseAssessmentDictionary = getHouseAssessmentDictionary(HOUSE_ASSESSMENT_FILEPATH);
 
     //this key-value pair will be later on used to convert an integer 'month of sale' to its respective month in string
     const numToMonth = {
@@ -29,38 +28,34 @@ function addMarkers(markers, map, filePath) {
         '12': 'December'
     };
 
+    // Add markers
+    for (let houseDatum of houseData)
+    {
+        // Convert latitude and longitude coordination for google map
+        const LATITUDE_FLOAT = parseFloat(houseDatum.latitude);
+        const LONGITUDE_FLOAT = parseFloat(houseDatum.longitude);
 
-    for (let i = 1; i < data.length; i++) {
+        // Winnipeg house assessment link
+        const HOUSE_ASSESSMENT_URL = "http://www.winnipegassessment.com/AsmtPub/english/propertydetails/" +
+            "details.aspx?pgLang=EN&isRealtySearch=true&RollNumber=" + houseDatum.roll_number;
 
-        //store individual house data in the respective variables
-        const latd = parseFloat(data[i][6]);
-        const long = parseFloat(data[i][5]);
-        const rollNumber = data[i][1] + "";
-        const address = data[i][0] + "";
-        const month = data[i][3] + "";
-        const year = data[i][2] + "";
-
-        //convert decimal sale prices to integer string for easier handling
-        let salePrice = (data[i][4] + "").split('.')[0];
-
-        //variable which holds the City of Winnipeg tax assessment link for the particular house
-        const propertyTax = "http://www.winnipegassessment.com/AsmtPub/english/propertydetails/" +
-            "details.aspx?pgLang=EN&isRealtySearch=true&RollNumber=" + rollNumber;
-
+        // Google marker
         const marker = new google.maps.Marker({
-            position: {lat: latd, lng: long},
-            title: salePrice.replace(/\D/g, ""),  //title will be later used to find mean price of all houses in a cluster
+            position: {lat: LATITUDE_FLOAT, lng: LONGITUDE_FLOAT},
+            title: houseDatum.sale_price.replace(/\D/g, ""),  //title will be later used to find mean price of all houses in a cluster
             icon: {
                 url: "images/house.png",
                 labelOrigin: new google.maps.Point(15, 40) //set position of label relative to the icon
             },
             label: {  //displays house price
-                text: salePrice,
+                text: houseDatum.sale_price,
                 color: "yellow",
                 fontWeight: "bolder",
                 fontSize: "12px"
             }
         });
+
+
 
         /*
         Below code adds HTML elements which hold house information
@@ -68,15 +63,27 @@ function addMarkers(markers, map, filePath) {
          */
 
         const html =
-          '<p style="color: darkred; padding-bottom: 20px; border-bottom: 2px solid darkred; font-size: 20px; font-style: normal; font-weight: 900; font-family: Lucida Console">' + address + '</p>'
+            '<p style="color: darkred; padding-bottom: 20px; border-bottom: 2px solid darkred; font-size: 20px; font-style: normal; font-weight: 900; font-family: Lucida Console">' + houseDatum.address + '</p>'
             +
-          '<p style="color: gray; padding-bottom: 8px; font-size: 14px; font-family: Verdana;">' + salePrice + ' in ' + numToMonth[month] + ' ' + year + '</p>'
+            '<b><p style="color: black; padding-bottom: 8px; font-size: 14px; font-family: Verdana;">' + 'Sale price: ' + houseDatum.sale_price + ' in ' + numToMonth[houseDatum.month_of_sale] + ' ' + houseDatum.year_of_sale + '</p></b>'
             +
-          '<p style="font-family: Verdana; font-size: 10px; font-weight: bold"> <a style="text-decoration: none;" href=' + propertyTax + ' target="_blank">(See tax assessment)</a></p>'
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Assessed value: ' + houseAssessmentDictionary[houseDatum.roll_number].assessedValue + '</p>'
             +
-          '<iframe width="450" height="250" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/streetview' +
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Year built: ' + houseAssessmentDictionary[houseDatum.roll_number].yearBuilt + '</p>'
+            +
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Living area: ' + houseAssessmentDictionary[houseDatum.roll_number].livingArea + '</p>'
+            +
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Land area: ' + houseAssessmentDictionary[houseDatum.roll_number].landArea + '</p>'
+            +
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Basement: ' + houseAssessmentDictionary[houseDatum.roll_number].basement + '</p>'
+            +
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Basement finish: ' + houseAssessmentDictionary[houseDatum.roll_number].basementFinish + '</p>'
+            +
+            '<p style="font-family: Verdana; font-size: 10px; font-weight: bold"> <a style="text-decoration: none;" href=' + HOUSE_ASSESSMENT_URL + ' target="_blank">(See tax assessment)</a></p>'
+            +
+            '<iframe width="450" height="250" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/streetview' +
             '?key=AIzaSyC4lx5Thi59RLievNBGwRzSoT8_Ts8ZGFU' +
-            '&location=' + latd + ',' + long + '" allowfullscreen> </iframe>';
+            '&location=' + LATITUDE_FLOAT + ',' + LONGITUDE_FLOAT + '" allowfullscreen> </iframe>';
         //iframe holds street view of house location
 
 
