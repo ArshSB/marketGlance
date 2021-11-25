@@ -1,6 +1,6 @@
-let getHouseDataObject = require("./getHouseDataObject.js");
-let parseWinnipegPropertyAssessment = require("./WinnipegPropertyAssessmentParse.js");
 const fs = require("fs");
+let getHouseDataObject = require("./getHouseDataObject.js");
+let parseWinnipegPropertyAssessment = require("./WinnipegPropertyAssessmentParse");
 
 async function main()
 {
