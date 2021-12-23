@@ -31,3 +31,4 @@ I also plan to move the backend from local browser to cloud server which will he
 * [Netlify](https://www.netlify.com/) - for hosting the app
 * [Various icons and images](https://iconscout.com) - for free, high definition icons and images
 * [Houses by Nick. V](http://houses.nickv.codes/) - for original idea and implementation
+* [CSV to JS Parser](https://www.npmjs.com/package/csv-to-js-parser) - for working with the data
