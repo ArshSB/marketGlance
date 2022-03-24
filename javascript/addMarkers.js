@@ -42,7 +42,7 @@ function addMarkers(markers, map, HOUSE_DATA_FILEPATH, HOUSE_ASSESSMENT_FILEPATH
         // Google marker
         const marker = new google.maps.Marker({
             position: {lat: LATITUDE_FLOAT, lng: LONGITUDE_FLOAT},
-            title: houseDatum.sale_price.replace(/\D/g, ""),  //title will be later used to find mean price of all houses in a cluster
+            title: houseDatum.sale_price.replace(/[^0-9.-]+/g,""),  //title will be later used to find mean price of all houses in a cluster
             icon: {
                 url: "images/house.png",
                 labelOrigin: new google.maps.Point(15, 40) //set position of label relative to the icon
@@ -54,8 +54,6 @@ function addMarkers(markers, map, HOUSE_DATA_FILEPATH, HOUSE_ASSESSMENT_FILEPATH
                 fontSize: "12px"
             }
         });
-
-
 
         /*
         Below code adds HTML elements which hold house information
