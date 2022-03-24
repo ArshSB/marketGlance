@@ -65,7 +65,7 @@ function addMarkers(markers, map, HOUSE_DATA_FILEPATH, HOUSE_ASSESSMENT_FILEPATH
             +
             '<b><p style="color: black; padding-bottom: 8px; font-size: 14px; font-family: Verdana;">' + 'Sale price: ' + houseDatum.sale_price + ' in ' + numToMonth[houseDatum.month_of_sale] + ' ' + houseDatum.year_of_sale + '</p></b>'
             +
-            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Assessed value: ' + houseAssessmentDictionary[houseDatum.roll_number].assessedValue + '</p>'
+            '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Assessed market value (as of April 2018): ' + houseAssessmentDictionary[houseDatum.roll_number].assessedValue + '</p>'
             +
             '<p style="color: gray; padding-bottom: -16px; font-size: 14px; font-family: Verdana;">' + 'Year built: ' + houseAssessmentDictionary[houseDatum.roll_number].yearBuilt + '</p>'
             +
